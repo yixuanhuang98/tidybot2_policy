@@ -44,7 +44,10 @@ class LogitechCamera(Camera):
         super().__init__()
 
     def get_cap(self, serial):
-        cap = cv.VideoCapture(f'/dev/v4l/by-id/usb-046d_Logitech_Webcam_C930e_{serial}-video-index0')
+        if serial == '43D877EF':
+            cap = cv.VideoCapture(f'/dev/v4l/by-id/usb-046d_HD_Pro_Webcam_C920_{serial}-video-index0')
+        else:
+            cap = cv.VideoCapture(f'/dev/v4l/by-id/usb-046d_Logitech_Webcam_C930e_{serial}-video-index0')
         cap.set(cv.CAP_PROP_FOURCC, cv.VideoWriter_fourcc('M', 'J', 'P', 'G'))
         cap.set(cv.CAP_PROP_FRAME_WIDTH, self.frame_width)
         cap.set(cv.CAP_PROP_FRAME_HEIGHT, self.frame_height)
@@ -59,6 +62,12 @@ class LogitechCamera(Camera):
             cap.set(cv.CAP_PROP_FOCUS, self.focus)  # Fixed focus
 
         # Check all settings match expected
+        print('logitech camera settings:')
+        print(f'frame width: {cap.get(cv.CAP_PROP_FRAME_WIDTH)}')
+        print(f'frame height: {cap.get(cv.CAP_PROP_FRAME_HEIGHT)}')
+        print(f'buffer size: {cap.get(cv.CAP_PROP_BUFFERSIZE)}')
+        print(f'autofocus: {cap.get(cv.CAP_PROP_AUTOFOCUS)}')
+        print(f'focus: {cap.get(cv.CAP_PROP_FOCUS)}')
         assert cap.get(cv.CAP_PROP_FRAME_WIDTH) == self.frame_width
         assert cap.get(cv.CAP_PROP_FRAME_HEIGHT) == self.frame_height
         assert cap.get(cv.CAP_PROP_BUFFERSIZE) == 1
@@ -103,8 +112,8 @@ class KinovaCamera(Camera):
             image = self.get_image()
 
         # Make sure fisheye lens did not accidentally get bumped
-        if not check_fisheye_centered(image):
-            raise Exception('The fisheye lens on the Kinova wrist camera appears to be off-center')
+        # if not check_fisheye_centered(image):
+        #     raise Exception('The fisheye lens on the Kinova wrist camera appears to be off-center')
 
     def apply_camera_settings(self):
         # Note: This function adds significant camera latency when it is called

@@ -3,7 +3,7 @@
 
 from cameras import KinovaCamera, LogitechCamera
 from constants import BASE_RPC_HOST, BASE_RPC_PORT, ARM_RPC_HOST, ARM_RPC_PORT, RPC_AUTHKEY
-from constants import BASE_CAMERA_SERIAL
+from constants import BASE_CAMERA_SERIAL, BASE_CAMERA_SERIAL_PRO
 from arm_server import ArmManager
 from base_server import BaseManager
 
@@ -28,7 +28,8 @@ class RealEnv:
         self.arm = arm_manager.Arm()
 
         # Cameras
-        self.base_camera = LogitechCamera(BASE_CAMERA_SERIAL)
+        # self.base_camera = LogitechCamera(BASE_CAMERA_SERIAL)
+        self.base_camera = LogitechCamera(BASE_CAMERA_SERIAL_PRO)
         self.wrist_camera = KinovaCamera()
 
     def get_obs(self):

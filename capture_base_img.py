@@ -1,8 +1,9 @@
 import cv2 as cv
 from cameras import LogitechCamera
-from constants import BASE_CAMERA_SERIAL
+from constants import BASE_CAMERA_SERIAL, BASE_CAMERA_SERIAL_PRO
 
-base_camera = LogitechCamera(BASE_CAMERA_SERIAL)
+# base_camera = LogitechCamera(BASE_CAMERA_SERIAL)
+base_camera = LogitechCamera(BASE_CAMERA_SERIAL_PRO)
 base_image = None
 while base_image is None:
     base_image = base_camera.get_image()

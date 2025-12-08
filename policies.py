@@ -312,7 +312,8 @@ class RemotePolicy(TeleopPolicy):
         for k, v in obs.items():
             if v.ndim == 3:
                 # Resize image to resolution expected by policy server
-                v = cv.resize(v, (POLICY_IMAGE_WIDTH, POLICY_IMAGE_HEIGHT))
+                print('v', v.shape)
+                # v = cv.resize(v, (POLICY_IMAGE_WIDTH, POLICY_IMAGE_HEIGHT))
 
                 # Encode image as JPEG
                 _, v = cv.imencode('.jpg', v)  # Note: Interprets RGB as BGR
