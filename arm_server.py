@@ -51,14 +51,25 @@ class Arm:
             time.sleep(0.01)
 
     def execute_action(self, action):
-        qpos = self.ik_solver.solve(action['arm_pos'], action['arm_quat'], self.arm.q)
+        if 'arm_pos' in action:
+            qpos = self.ik_solver.solve(action['arm_pos'], action['arm_quat'], self.arm.q)
+        elif 'arm_qpos' in action:
+            qpos = action['arm_qpos']
         self.command_queue.put((qpos, action['gripper_pos'].item()))
 
+    def radians_clip(self, radians):
+        return (radians + np.pi) % (2 * np.pi) - np.pi
+    
+    def get_joint_angles(self):
+        return self.radians_clip(self.arm.q)
+    
     def get_state(self):
         arm_pos, arm_quat = self.arm.get_tool_pose()
+        current_joints = self.get_joint_angles()
         if arm_quat[3] < 0.0:  # Enforce quaternion uniqueness
             np.negative(arm_quat, out=arm_quat)
         state = {
+            'arm_qpos': current_joints,
             'arm_pos': arm_pos,
             'arm_quat': arm_quat,
             'gripper_pos': np.array([self.arm.gripper_pos]),
