@@ -38,6 +38,10 @@ class Arm:
         self.arm.open_gripper()
         self.arm.retract()
 
+        # # move arm forward a bit
+        # forward_joint_angles = self.arm.compute_inverse_kinematics((0.2, 0, 0.2), (180, 0, 90), guess_joint_angles=[0, 70, 180, 225, 0, 55, 90])
+        # self.arm.move_angular(forward_joint_angles)
+
         # Create new instance of controller
         self.controller = JointCompliantController(self.command_queue)
 

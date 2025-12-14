@@ -35,6 +35,8 @@ class TorqueControlledArm:
         # Use PID file to enforce single instance
         create_pid_file('tidybot2-arm-controller')
 
+        
+        
         # General Kortex setup
         self.tcp_connection = DeviceConnection.createTcpConnection()
         self.udp_connection = DeviceConnection.createUdpConnection()
@@ -166,6 +168,42 @@ class TorqueControlledArm:
 
     def close_gripper(self):
         self._gripper_position_command(1)
+
+    def compute_inverse_kinematics(self, xyz, theta_xyz, guess_joint_angles=None):
+        assert not self.cyclic_running, 'Arm must be in high-level servoing mode'
+        ik_data = Base_pb2.IKData()
+        ik_data.cartesian_pose.x = xyz[0]
+        ik_data.cartesian_pose.y = xyz[1]
+        ik_data.cartesian_pose.z = xyz[2]
+        ik_data.cartesian_pose.theta_x = theta_xyz[0]
+        ik_data.cartesian_pose.theta_y = theta_xyz[1]
+        ik_data.cartesian_pose.theta_z = theta_xyz[2]
+        if guess_joint_angles is None:
+            guess_joint_angles = self.get_joint_angles()
+        for joint_angle in guess_joint_angles:
+            ik_data.guess.joint_angles.add().value = joint_angle
+        try:
+            computed_joint_angles = self.base.ComputeInverseKinematics(ik_data)
+            return [(joint_angle.value % 360) for joint_angle in computed_joint_angles.joint_angles]
+        except KServerException:
+            return None
+
+    def move_angular(self, joint_angles, blocking=True):
+        assert not self.cyclic_running, 'Arm must be in high-level servoing mode'
+        assert len(joint_angles) == self.actuator_count
+        # Action topic notifications
+        self.end_or_abort_event = threading.Event()
+        self.end_or_abort_event.set()
+
+        action = Base_pb2.Action()
+        for i in range(self.actuator_count):
+            joint_angle = action.reach_joint_angles.joint_angles.joint_angles.add()
+            joint_angle.joint_identifier = i
+            joint_angle.value = joint_angles[i]
+        self.base.ExecuteAction(action)
+        self.end_or_abort_event.clear()
+        if blocking:
+            self.end_or_abort_event.wait(20)
 
     def set_joint_limits(self, speed_limits=(60, 60, 60, 60, 60, 60, 60), acceleration_limits=(80, 80, 80, 80, 80, 80, 80)):
         joint_speed_soft_limits = ControlConfig_pb2.JointSpeedSoftLimits()
