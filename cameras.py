@@ -44,7 +44,7 @@ class LogitechCamera(Camera):
         super().__init__()
 
     def get_cap(self, serial):
-        if serial == '43D877EF':
+        if serial in ('43D877EF', '6AB51EEF'):
             cap = cv.VideoCapture(f'/dev/v4l/by-id/usb-046d_HD_Pro_Webcam_C920_{serial}-video-index0')
         else:
             cap = cv.VideoCapture(f'/dev/v4l/by-id/usb-046d_Logitech_Webcam_C930e_{serial}-video-index0')

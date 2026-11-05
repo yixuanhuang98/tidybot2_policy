@@ -23,7 +23,7 @@ RPC_AUTHKEY = b'secret password'
 
 # Cameras
 BASE_CAMERA_SERIAL = '7DEAE8DE'
-BASE_CAMERA_SERIAL_PRO = '43D877EF'
+BASE_CAMERA_SERIAL_PRO = '6AB51EEF'  # '43D877EF'
 # WRIST_CAMERA_SERIAL = 'TODO'  # Not used by Kinova wrist camera
 
 # Policy
