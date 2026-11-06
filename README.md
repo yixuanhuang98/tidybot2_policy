@@ -87,3 +87,16 @@ This starts a Flask server on port `5000`, which serves the phone web app used t
 ## Reference
 
 This codebase builds on TidyBot++. For full operating instructions, see the TidyBot++ usage guide: https://tidybot2.github.io/docs/usage/
+
+## Citation
+
+This codebase is built on TidyBot++. If you find it useful for your research, please consider citing:
+
+```
+@inproceedings{wu2024tidybot,
+  title = {TidyBot++: An Open-Source Holonomic Mobile Manipulator for Robot Learning},
+  author = {Wu, Jimmy and Chong, William and Holmberg, Robert and Prasad, Aaditya and Gao, Yihuai and Khatib, Oussama and Song, Shuran and Rusinkiewicz, Szymon and Bohg, Jeannette},
+  booktitle = {Conference on Robot Learning},
+  year = {2024}
+}
+```
