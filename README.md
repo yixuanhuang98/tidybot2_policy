@@ -1,6 +1,6 @@
 # PRPL TidyBot++ Policy Inference
 
-Policy inference infrastructure for the PRPL TidyBot++ mobile manipulator.
+Policy inference infrastructure for the TidyBot++ mobile manipulator at the [Princeton Robot Planning & Learning (PRPL) lab](https://prpl-group.com/).
 The robot's onboard mini PC runs the real-time base and arm controllers, a GPU workstation serves the policy, and an iPhone running the XR browser is used to start, pause, and reset inference episodes.
 
 ## System overview
