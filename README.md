@@ -20,6 +20,9 @@ graph LR
 
 Inference requires three machines on the same network: the onboard **mini PC**, a **GPU workstation** running the policy, and an **iPhone** running the XR browser.
 
+> [!NOTE]
+> Please ask Yixuan Huang for the user accounts, IP addresses, and passwords of the mini PC and the GPU workstation.
+
 ### 1. Start the base server (mini PC)
 
 SSH into the mini PC and start a `tmux` session with four windows. In window 1, start the base RPC server:
