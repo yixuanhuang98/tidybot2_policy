@@ -25,7 +25,17 @@ Inference requires three machines on the same network: the onboard **mini PC**, 
 
 ### 1. Start the base server (mini PC)
 
-SSH into the mini PC and start a `tmux` session with four windows. In window 1, start the base RPC server:
+SSH into the mini PC and start a `tmux` session with four windows.
+
+> [!IMPORTANT]
+> In every `tmux` window on the mini PC, first activate the conda environment and go to the codebase directory before running any command:
+>
+> ```bash
+> conda activate tidybot2
+> cd ~/tidybot_repo/tidybot2
+> ```
+
+In window 1, start the base RPC server:
 
 ```bash
 python base_server.py
